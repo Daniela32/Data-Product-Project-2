@@ -1,0 +1,56 @@
+Nutritional Markers
+========================================================
+author: by Daniela Galatro
+date: April 2019
+autosize: true
+Course Project: Shiny Application and Reproducible Pitch
+
+Overview
+========================================================
+
+The goal of the project was to create an application which deploys nutritional markers including body mass index, basal metabolic rate and ideal weight; based on weight, height, waist and neck circumferences, and gender.
+
+The application can be found in: https://cuchibala.shinyapps.io/DGproject/
+
+Input
+========================================================
+The input variables are shown in a main panel with slides and a list: height, weight, waist and neck circumference, age and gender. International System is used for input/output variables.
+
+Calculations
+========================================================
+The calculation of the Body Mass Index, Basal Metabolic Rate, and Ideal Weight is done through the following R-codes
+```{r, eval=FALSE}
+    #Body Mass Index
+    bmi = round(input$mass/(input$height/100)^2, 1) 
+    
+    # Basal metabolic rate (BMR) calculated as per Mifflin-St Jeor Equation
+    if (input$Gender=="Male") bmr = 10*input$mass+6.25*input$height-5*input$age+5
+    else bmr= 10*input$mass+6.25*input$height-5*input$age-161
+    
+    #Ideal weight calculated as per D.R. Miller formula
+    if (input$Gender=="Male") iw = 56.2+1.41*((input$height-152.4)/2.54)
+    else iw= 53.1+1.36*((input$height-152.4)/2.54)
+```
+
+Results Interpretation
+========================================================
+A set of conditionals allows indicanting the body condition (e.g. overweight), based on the Body Mass Index. 
+```{r, eval=FALSE}
+      if      (bmi <  18.5 & neck < 34.8 & waist < 78 & Gender == "Male") condition = "<span style='color: blue'>Underweight</span>"
+      else if (bmi <= 25.0 & neck < 36.7 & waist < 83.7 & Gender == "Male") condition= "<span style='color: green'>Normal</span>"
+      else if (bmi <= 30.0 & neck < 39.8 & waist < 95.2 & Gender == "Male") condition = "<span style='color: orange'>Overweight</span>"
+........
+```
+In addition, the results include the Body Mass Index, which shows the maximum amount of calory should consume, based on the previous calculations; and the ideal weight. The message "Check your input" appears when non-logical values are input. 
+
+
+Links
+========================================================
+
+Source Code in Githubs: https://github.com/Daniela32/Data-Product-Project-2/tree/master
+
+Application: https://cuchibala.shinyapps.io/DGproject/
+
+References:
+  https://www.calculator.net/bmi-calculator.html
+  https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5787633/
